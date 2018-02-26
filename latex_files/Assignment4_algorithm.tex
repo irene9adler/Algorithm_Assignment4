@@ -1,0 +1,93 @@
+\documentclass[11pt]{ctexart}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{palatino}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\author{Song Qige 2017E8018661044}
+\title{091M4041H - Assignment 4 \\Algorithm Design and Analysis }
+
+\begin{document}
+ \begin{CJK*}{GBK}{song}
+  \maketitle
+   \section{飞机降落问题(2)}%第二题
+         根据题意得到的线性规划表示：\\
+         $ max \ z   \\ s.t. $
+         \begin{flalign}
+         \begin{split}
+         s_i \le x_i \le t_i  \ \  i = 1,2,3,...,n  \\
+         x_i - x_{i-1} \ge z \  \  i = 2,3,...,n  \\
+         xi \ge 0 \ \ i = 1,2,3,...,n  \\
+         z \ge 0   \\
+         \end{split}&
+         \end{flalign}
+         转化为标准形式： \\
+         $ min \ -z \\ s.t.$
+         \begin{flalign}
+         \begin{split}
+         -x_i  \le -s_i \ \  i = 1,2,3,...,n \\
+         x_i \le t_i \ \  i = 1,2,3,...,n \\
+         -x_i + x_{i-1} \le -z \ \  i = 2,3,...,n \\
+         xi \ge 0 \ \ i = 1,2,3,...,n \\
+         z \ge 0   \\
+         \end{split}&
+         \end{flalign}
+         尝试用glpk求解这个线性规划：  \\
+         设定n=5,即5架飞机，其降落时间为0-23整数时间，时间窗口如下：[1,2] \ [3,6] \ [7,9] \ [13,15] \ [18,22]。
+         则可写以下线性规划描述文件： \\
+         \includegraphics[width=4.00in,height=3.00in]{2-1.JPG}\\
+         glpk计算结果如下图： \\
+         \includegraphics[width=4.00in,height=2.50in]{2-2.JPG}\\
+         由图可知各飞机降落时间结果为x1=1，x2=5，x3=9，x4=13，x5=18。最近的时间间隔为z=4。
+
+       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+       \section{安置加油站(4)}%第四题
+        根据题意得到的线性规划表示： \\
+        $ min \ z \\ s.t.$
+        \begin{flalign}
+         \begin{split}
+        d_i - r \le x_i \le d_i + r \\
+        x_{i+1} - x_i \le z \\
+        x_i \ge 0 \\ i = 1,2,3,...,n \\
+        z \ge 0   \\
+         \end{split}&
+        \end{flalign}
+        转化为标准形式： \\
+        $ min \ z \\ s.t. $
+        \begin{flalign}
+        \begin{split}
+        x_i \le d_i + r \\
+        -x_i \le -d_i + r \\
+        x_{i+1} - x_i \le z \\
+        x_i \ge 0 \\ i = 1,2,3,...,n \\
+        z \ge 0   \\
+        \end{split}&
+        \end{flalign}
+        尝试用glpk求解这个线性规划： \\
+        设n = 6,r = 3。d1 = 5,d2 = 18,d3 = 25,d4 = 56,d5 = 69,d6 = 102。 \\
+        则可写以下线性规划描述文件： \\
+         \includegraphics[width=4.00in,height=3.30in]{4-1.JPG}\\
+         glpk计算结果如下图： \\
+         \includegraphics[width=4.00in,height=2.90in]{4-2.JPG}\\
+         由图可知6个安置加油站位置的结果为：x1 = 2，x2 = 15，x3 = 26，x4 = 53，x5 = 72，x6 = 99。
+         此时目标z=27，为第五个和第六个加油站之间的距离。
+
+         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+         \section{Dual Simplex算法(7)} %第七题
+         \subsection{result analysis}
+         \ 使用glpk工具求解该线性规划，线性规划描述文件如下： \\
+         \includegraphics[width=4.00in,height=2.00in]{7-1.JPG}\\
+         \ 求解结果如下：\\
+         \includegraphics[width=4.00in,height=2.00in]{7-3.JPG}\\
+         由上图可知结果为x1=0,x2=0,x3=0,x4=1.5,x5=2.5,x6=16.5。目标函数z的最小值为-16.5。
+         Dual Simplex算法求解问题的结果如如下： \\
+         \includegraphics[width=4.00in,height=1.80in]{7-4.JPG}\\
+         由图可知Dual Simplex算法求解结果和glpk工具一致。
+ \end{CJK*}
+\end{document}
